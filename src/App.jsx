@@ -255,34 +255,6 @@ function App() {
 
   return (
     <>
-      {/* 印刷時の見た目だけを制御（body には触らない） */}
-      <style>
-        {`
-          @media print {
-            .page-root {
-              background: #ffffff !important;
-              padding: 0 !important;
-            }
-            .page-card {
-              box-shadow: none !important;
-              border-radius: 0 !important;
-              margin: 0 !important;
-              max-width: none !important;
-              width: 100% !important;
-            }
-            .no-print {
-              display: none !重要;
-            }
-            .scroll-x {
-              overflow: visible !important;
-            }
-            .scroll-x table {
-              width: 100% !important;
-            }
-          }
-        `}
-      </style>
-
       {/* 全体を印刷用コンテナで包む */}
       <div className="print-container">
         <div
@@ -554,7 +526,7 @@ function App() {
                 style={{
                   borderCollapse: "collapse",
                   fontSize: "0.85rem",
-                  minWidth: "820px", // ★ 900 → 820 に縮小
+                  minWidth: "900px",
                 }}
               >
                 <thead>
@@ -616,7 +588,7 @@ function App() {
                             handleChange(sieve.id, e.target.value)
                           }
                           style={{
-                            width: "65px", // ★ 80 → 65 に縮小
+                            width: "80px",
                             padding: "4px 6px",
                             fontSize: "0.9rem",
                             boxSizing: "border-box",
@@ -780,8 +752,9 @@ function App() {
               </div>
             )}
 
-            {/* 規格表（参考） */}
+            {/* ▼▼ 規格表（2ページ目に出したい） ▼▼ */}
             <div
+              className="standard-section"
               style={{
                 marginTop: "8px",
                 paddingTop: "8px",
@@ -807,6 +780,7 @@ function App() {
                 単位：％　／　「－」はそのふるいに規定がないことを表します。
               </p>
               <div
+                className="standard-scroll"
                 style={{
                   overflowX: "auto",
                 }}
@@ -878,7 +852,7 @@ function App() {
                 </table>
               </div>
             </div>
-            {/* 規格表ここまで */}
+            {/* ▲ 規格表ここまで ▲ */}
           </div>
         </div>
       </div>
