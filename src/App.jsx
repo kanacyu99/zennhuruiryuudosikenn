@@ -316,6 +316,7 @@ function App() {
                       borderBottom: "1px solid #eee",
                       padding: "4px",
                       whiteSpace: "nowrap",
+                      fontWeight: 600,
                     }}
                   >
                     {sieve.label}
@@ -333,9 +334,10 @@ function App() {
                       onChange={(e) =>
                         handleChange(sieve.id, e.target.value)
                       }
+                      placeholder={sieve.label} // ★ここで篩サイズを表示
                       style={{
                         width: "100%",
-                        maxWidth: "120px",
+                        maxWidth: "140px",
                         padding: "4px 6px",
                         fontSize: "0.9rem",
                         boxSizing: "border-box",
