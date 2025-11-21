@@ -255,7 +255,7 @@ function App() {
 
   return (
     <>
-      {/* 印刷時の見た目だけを制御（body には触らない） */}
+      {/* 印刷専用スタイル（横切れ防止 & 規格表を2ページ目から） */}
       <style>
         {`
           @media print {
@@ -273,15 +273,28 @@ function App() {
             .no-print {
               display: none !important;
             }
+
+            /* 入力テーブル：ページ幅にフィットさせる */
             .scroll-x {
               overflow: visible !important;
             }
             .scroll-x table {
               width: 100% !important;
+              min-width: 0 !important;
+              table-layout: fixed !important;
             }
-            /* 規格表は 2 ページ目から開始 */
-            .spec-section {
+            .scroll-x input {
+              width: 100% !important;
+            }
+
+            /* 規格表は必ず2ページ目から・横切れ防止 */
+            .spec-page-break {
               page-break-before: always;
+            }
+            .spec-table-wrapper table {
+              width: 100% !important;
+              min-width: 0 !important;
+              table-layout: fixed !important;
             }
           }
         `}
@@ -784,9 +797,9 @@ function App() {
               </div>
             )}
 
-            {/* 規格表（参考） → ここから 2 ページ目に */}
+            {/* 規格表（参考） — ここから2ページ目 */}
             <div
-              className="spec-section"
+              className="spec-page-break"
               style={{
                 marginTop: "8px",
                 paddingTop: "8px",
@@ -812,6 +825,7 @@ function App() {
                 単位：％　／　「－」はそのふるいに規定がないことを表します。
               </p>
               <div
+                className="spec-table-wrapper"
                 style={{
                   overflowX: "auto",
                 }}
