@@ -255,15 +255,10 @@ function App() {
 
   return (
     <>
-      {/* 印刷用スタイル */}
+      {/* 印刷時の見た目だけを制御（body には触らない） */}
       <style>
         {`
           @media print {
-            body {
-              margin: 10mm;
-              -webkit-print-color-adjust: exact;
-              print-color-adjust: exact;
-            }
             .page-root {
               background: #ffffff !important;
               padding: 0 !important;
@@ -280,546 +275,536 @@ function App() {
         `}
       </style>
 
-      <div
-        className="page-root"
-        style={{
-          minHeight: "100vh",
-          background: "#f5f5f5",
-          padding: "16px",
-          boxSizing: "border-box",
-        }}
-      >
+      {/* 👇 ここで全体を印刷用コンテナで包む */}
+      <div className="print-container">
         <div
-          className="page-card"
+          className="page-root"
           style={{
-            maxWidth: "960px",
-            margin: "0 auto",
-            background: "#ffffff",
-            borderRadius: "12px",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+            minHeight: "100vh",
+            background: "#f5f5f5",
             padding: "16px",
+            boxSizing: "border-box",
           }}
         >
-          {/* 上部ヘッダー＋印刷ボタン */}
           <div
+            className="page-card"
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              gap: "8px",
-              marginBottom: "8px",
+              maxWidth: "960px",
+              margin: "0 auto",
+              background: "#ffffff",
+              borderRadius: "12px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+              padding: "16px",
             }}
           >
-            <div style={{ flex: 1 }}>
-              <h1
-                style={{
-                  fontSize: "1.4rem",
-                  margin: "0 0 4px 0",
-                  textAlign: "center",
-                }}
-              >
-                路盤材 粒度試験結果 自動判定ツール
-              </h1>
-              <p
-                style={{
-                  fontSize: "0.9rem",
-                  color: "#555",
-                  textAlign: "center",
-                  margin: 0,
-                }}
-              >
-                JIS 粒度試験の通過質量百分率（％）を入力すると、HMS・MS・CS・RC・RM・カタマSP
-                の各規格に対して合否判定します。※「規定なし」のふるいは自動でスキップします。
-              </p>
-            </div>
-
-            {/* 印刷ボタン（画面のみ表示） */}
-            <div className="no-print" style={{ textAlign: "right" }}>
-              <button
-                onClick={() => window.print()}
-                style={{
-                  padding: "6px 12px",
-                  borderRadius: "999px",
-                  border: "1px solid #1976d2",
-                  background: "#fff",
-                  color: "#1976d2",
-                  fontSize: "0.85rem",
-                  cursor: "pointer",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                🖨 印刷 / PDF
-              </button>
-            </div>
-          </div>
-
-          {/* ▼ 試験情報入力欄 ▼ */}
-          <div
-            style={{
-              marginBottom: "16px",
-              padding: "8px 12px",
-              borderRadius: "8px",
-              background: "#fafafa",
-              border: "1px solid #e0e0e0",
-            }}
-          >
-            <h2
-              style={{
-                fontSize: "1rem",
-                margin: "0 0 8px 0",
-                color: "#333",
-              }}
-            >
-              試験情報
-            </h2>
+            {/* 上部ヘッダー＋印刷ボタン */}
             <div
               style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "8px 12px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+                gap: "8px",
+                marginBottom: "8px",
               }}
             >
-              <div>
-                <label
+              <div style={{ flex: 1 }}>
+                <h1
                   style={{
-                    fontSize: "0.8rem",
-                    color: "#555",
-                    display: "block",
-                    marginBottom: "2px",
+                    fontSize: "1.4rem",
+                    margin: "0 0 4px 0",
+                    textAlign: "center",
                   }}
                 >
-                  試験名
-                </label>
-                <input
-                  type="text"
-                  value={sampleInfo.testName}
-                  onChange={(e) =>
-                    handleSampleInfoChange("testName", e.target.value)
-                  }
+                  路盤材 粒度試験結果 自動判定ツール
+                </h1>
+                <p
                   style={{
-                    width: "100%",
-                    padding: "4px 6px",
                     fontSize: "0.9rem",
-                    boxSizing: "border-box",
+                    color: "#555",
+                    textAlign: "center",
+                    margin: 0,
                   }}
-                  placeholder="例：路盤材 粒度試験"
-                />
+                >
+                  JIS 粒度試験の通過質量百分率（％）を入力すると、HMS・MS・CS・RC・RM・カタマSP
+                  の各規格に対して合否判定します。※「規定なし」のふるいは自動でスキップします。
+                </p>
               </div>
-              <div>
-                <label
+
+              {/* 印刷ボタン（画面のみ表示） */}
+              <div className="no-print" style={{ textAlign: "right" }}>
+                <button
+                  onClick={() => window.print()}
                   style={{
-                    fontSize: "0.8rem",
-                    color: "#555",
-                    display: "block",
-                    marginBottom: "2px",
+                    padding: "6px 12px",
+                    borderRadius: "999px",
+                    border: "1px solid #1976d2",
+                    background: "#fff",
+                    color: "#1976d2",
+                    fontSize: "0.85rem",
+                    cursor: "pointer",
+                    whiteSpace: "nowrap",
                   }}
                 >
-                  試料名
-                </label>
-                <input
-                  type="text"
-                  value={sampleInfo.sampleName}
-                  onChange={(e) =>
-                    handleSampleInfoChange("sampleName", e.target.value)
-                  }
-                  style={{
-                    width: "100%",
-                    padding: "4px 6px",
-                    fontSize: "0.9rem",
-                    boxSizing: "border-box",
-                  }}
-                  placeholder="例：CS-40 八幡 ○○ロット"
-                />
-              </div>
-              <div>
-                <label
-                  style={{
-                    fontSize: "0.8rem",
-                    color: "#555",
-                    display: "block",
-                    marginBottom: "2px",
-                  }}
-                >
-                  試料採取日
-                </label>
-                <input
-                  type="date"
-                  value={sampleInfo.collectedDate}
-                  onChange={(e) =>
-                    handleSampleInfoChange("collectedDate", e.target.value)
-                  }
-                  style={{
-                    width: "100%",
-                    padding: "4px 6px",
-                    fontSize: "0.9rem",
-                    boxSizing: "border-box",
-                  }}
-                />
-              </div>
-              <div>
-                <label
-                  style={{
-                    fontSize: "0.8rem",
-                    color: "#555",
-                    display: "block",
-                    marginBottom: "2px",
-                  }}
-                >
-                  試験年月日
-                </label>
-                <input
-                  type="date"
-                  value={sampleInfo.testDate}
-                  onChange={(e) =>
-                    handleSampleInfoChange("testDate", e.target.value)
-                  }
-                  style={{
-                    width: "100%",
-                    padding: "4px 6px",
-                    fontSize: "0.9rem",
-                    boxSizing: "border-box",
-                  }}
-                />
-              </div>
-              <div>
-                <label
-                  style={{
-                    fontSize: "0.8rem",
-                    color: "#555",
-                    display: "block",
-                    marginBottom: "2px",
-                  }}
-                >
-                  試験者
-                </label>
-                <input
-                  type="text"
-                  value={sampleInfo.tester}
-                  onChange={(e) =>
-                    handleSampleInfoChange("tester", e.target.value)
-                  }
-                  style={{
-                    width: "100%",
-                    padding: "4px 6px",
-                    fontSize: "0.9rem",
-                    boxSizing: "border-box",
-                  }}
-                  placeholder="例：入江"
-                />
-              </div>
-              <div>
-                <label
-                  style={{
-                    fontSize: "0.8rem",
-                    color: "#555",
-                    display: "block",
-                    marginBottom: "2px",
-                  }}
-                >
-                  備考
-                </label>
-                <input
-                  type="text"
-                  value={sampleInfo.note}
-                  onChange={(e) =>
-                    handleSampleInfoChange("note", e.target.value)
-                  }
-                  style={{
-                    width: "100%",
-                    padding: "4px 6px",
-                    fontSize: "0.9rem",
-                    boxSizing: "border-box",
-                  }}
-                  placeholder="例：備考や注意点など"
-                />
+                  🖨 印刷 / PDF
+                </button>
               </div>
             </div>
-          </div>
-          {/* ▲ 試験情報ここまで ▲ */}
 
-          {/* 粒度入力テーブル */}
-          <div
-            style={{
-              overflowX: "auto",
-              marginBottom: "16px",
-            }}
-          >
-            <table
-              style={{
-                width: "100%",
-                borderCollapse: "collapse",
-                fontSize: "0.85rem",
-              }}
-            >
-              <thead>
-                <tr>
-                  <th
-                    style={{
-                      borderBottom: "1px solid #ddd",
-                      padding: "4px",
-                      textAlign: "left",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    ふるい
-                  </th>
-                  <th
-                    style={{
-                      borderBottom: "1px solid #ddd",
-                      padding: "4px",
-                      textAlign: "center",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    通過質量百分率（％）
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {sieves.map((sieve) => (
-                  <tr key={sieve.id}>
-                    <td
-                      style={{
-                        borderBottom: "1px solid #eee",
-                        padding: "4px",
-                        whiteSpace: "nowrap",
-                        fontWeight: 600,
-                      }}
-                    >
-                      {sieve.label}
-                    </td>
-                    <td
-                      style={{
-                        borderBottom: "1px solid #eee",
-                        padding: "4px",
-                      }}
-                    >
-                      <input
-                        type="number"
-                        inputMode="decimal"
-                        value={inputs[sieve.id]}
-                        onChange={(e) =>
-                          handleChange(sieve.id, e.target.value)
-                        }
-                        placeholder={sieve.label}
-                        style={{
-                          width: "100%",
-                          maxWidth: "140px",
-                          padding: "4px 6px",
-                          fontSize: "0.9rem",
-                          boxSizing: "border-box",
-                        }}
-                        min={0}
-                        max={100}
-                      />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* ボタン（印刷時は非表示） */}
-          <div
-            className="no-print"
-            style={{
-              display: "flex",
-              gap: "8px",
-              justifyContent: "center",
-              marginBottom: "16px",
-              flexWrap: "wrap",
-            }}
-          >
-            <button
-              onClick={handleJudge}
-              style={{
-                padding: "8px 16px",
-                borderRadius: "999px",
-                border: "none",
-                background: "#1976d2",
-                color: "#fff",
-                fontSize: "0.95rem",
-                cursor: "pointer",
-              }}
-            >
-              判定する
-            </button>
-            <button
-              onClick={handleClear}
-              style={{
-                padding: "8px 16px",
-                borderRadius: "999px",
-                border: "1px solid #ccc",
-                background: "#fff",
-                color: "#333",
-                fontSize: "0.9rem",
-                cursor: "pointer",
-              }}
-            >
-              入力をクリア（粒度のみ）
-            </button>
-          </div>
-
-          {/* 結果表示 */}
-          {results && (
+            {/* ▼ 試験情報入力欄 ▼ */}
             <div
               style={{
-                display: "grid",
-                gridTemplateColumns: "1fr",
-                gap: "12px",
                 marginBottom: "16px",
+                padding: "8px 12px",
+                borderRadius: "8px",
+                background: "#fafafa",
+                border: "1px solid #e0e0e0",
               }}
             >
-              {/* 合格一覧 */}
-              <div
+              <h2
                 style={{
-                  borderRadius: "8px",
-                  border: "1px solid #c8e6c9",
-                  background: "#e8f5e9",
-                  padding: "8px 12px",
+                  fontSize: "1rem",
+                  margin: "0 0 8px 0",
+                  color: "#333",
                 }}
               >
-                <h2
-                  style={{
-                    fontSize: "1rem",
-                    margin: "0 0 4px 0",
-                    color: "#2e7d32",
-                  }}
-                >
-                  ✅ 規格内（合格）の製品
-                </h2>
-                {results.passed.length === 0 ? (
-                  <p style={{ fontSize: "0.9rem", margin: 0 }}>
-                    合格した製品はありません。
-                  </p>
-                ) : (
-                  <ul
-                    style={{
-                      margin: 0,
-                      paddingLeft: "20px",
-                      fontSize: "0.9rem",
-                    }}
-                  >
-                    {results.passed.map((name) => (
-                      <li key={name}>{name}</li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-
-              {/* 不合格の詳細 */}
+                試験情報
+              </h2>
               <div
                 style={{
-                  borderRadius: "8px",
-                  border: "1px solid #ffcdd2",
-                  background: "#ffebee",
-                  padding: "8px 12px",
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "8px 12px",
                 }}
               >
-                <h2
-                  style={{
-                    fontSize: "1rem",
-                    margin: "0 0 4px 0",
-                    color: "#c62828",
-                  }}
-                >
-                  ❌ 規格外（NG）の製品とNGふるい
-                </h2>
-                {results.failed.length === 0 ? (
-                  <p style={{ fontSize: "0.9rem", margin: 0 }}>
-                    規格外の製品はありません。
-                  </p>
-                ) : (
-                  <div
+                <div>
+                  <label
                     style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "6px",
-                      fontSize: "0.9rem",
+                      fontSize: "0.8rem",
+                      color: "#555",
+                      display: "block",
+                      marginBottom: "2px",
                     }}
                   >
-                    {results.failed.map((item) => (
-                      <div
-                        key={item.name}
-                        style={{
-                          padding: "6px 8px",
-                          borderRadius: "6px",
-                          background: "#ffffff",
-                          border: "1px solid #ffcdd2",
-                        }}
-                      >
-                        <strong>{item.name}</strong>
-                        <ul
-                          style={{
-                            margin: "4px 0 0 18px",
-                            padding: 0,
-                          }}
-                        >
-                          {item.reasons.map((r, idx) => (
-                            <li key={idx}>{r}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                    試験名
+                  </label>
+                  <input
+                    type="text"
+                    value={sampleInfo.testName}
+                    onChange={(e) =>
+                      handleSampleInfoChange("testName", e.target.value)
+                    }
+                    style={{
+                      width: "100%",
+                      padding: "4px 6px",
+                      fontSize: "0.9rem",
+                      boxSizing: "border-box",
+                    }}
+                    placeholder="例：路盤材 粒度試験"
+                  />
+                </div>
+                <div>
+                  <label
+                    style={{
+                      fontSize: "0.8rem",
+                      color: "#555",
+                      display: "block",
+                      marginBottom: "2px",
+                    }}
+                  >
+                    試料名
+                  </label>
+                  <input
+                    type="text"
+                    value={sampleInfo.sampleName}
+                    onChange={(e) =>
+                      handleSampleInfoChange("sampleName", e.target.value)
+                    }
+                    style={{
+                      width: "100%",
+                      padding: "4px 6px",
+                      fontSize: "0.9rem",
+                      boxSizing: "border-box",
+                    }}
+                    placeholder="例：CS-40 八幡 ○○ロット"
+                  />
+                </div>
+                <div>
+                  <label
+                    style={{
+                      fontSize: "0.8rem",
+                      color: "#555",
+                      display: "block",
+                      marginBottom: "2px",
+                    }}
+                  >
+                    試料採取日
+                  </label>
+                  <input
+                    type="date"
+                    value={sampleInfo.collectedDate}
+                    onChange={(e) =>
+                      handleSampleInfoChange("collectedDate", e.target.value)
+                    }
+                    style={{
+                      width: "100%",
+                      padding: "4px 6px",
+                      fontSize: "0.9rem",
+                      boxSizing: "border-box",
+                    }}
+                  />
+                </div>
+                <div>
+                  <label
+                    style={{
+                      fontSize: "0.8rem",
+                      color: "#555",
+                      display: "block",
+                      marginBottom: "2px",
+                    }}
+                  >
+                    試験年月日
+                  </label>
+                  <input
+                    type="date"
+                    value={sampleInfo.testDate}
+                    onChange={(e) =>
+                      handleSampleInfoChange("testDate", e.target.value)
+                    }
+                    style={{
+                      width: "100%",
+                      padding: "4px 6px",
+                      fontSize: "0.9rem",
+                      boxSizing: "border-box",
+                    }}
+                  />
+                </div>
+                <div>
+                  <label
+                    style={{
+                      fontSize: "0.8rem",
+                      color: "#555",
+                      display: "block",
+                      marginBottom: "2px",
+                    }}
+                  >
+                    試験者
+                  </label>
+                  <input
+                    type="text"
+                    value={sampleInfo.tester}
+                    onChange={(e) =>
+                      handleSampleInfoChange("tester", e.target.value)
+                    }
+                    style={{
+                      width: "100%",
+                      padding: "4px 6px",
+                      fontSize: "0.9rem",
+                      boxSizing: "border-box",
+                    }}
+                    placeholder="例：入江"
+                  />
+                </div>
+                <div>
+                  <label
+                    style={{
+                      fontSize: "0.8rem",
+                      color: "#555",
+                      display: "block",
+                      marginBottom: "2px",
+                    }}
+                  >
+                    備考
+                  </label>
+                  <input
+                    type="text"
+                    value={sampleInfo.note}
+                    onChange={(e) =>
+                      handleSampleInfoChange("note", e.target.value)
+                    }
+                    style={{
+                      width: "100%",
+                      padding: "4px 6px",
+                      fontSize: "0.9rem",
+                      boxSizing: "border-box",
+                    }}
+                    placeholder="例：備考や注意点など"
+                  />
+                </div>
               </div>
             </div>
-          )}
+            {/* ▲ 試験情報ここまで ▲ */}
 
-          {/* 規格表（参考） */}
-          <div
-            style={{
-              marginTop: "8px",
-              paddingTop: "8px",
-              borderTop: "1px dashed #ccc",
-            }}
-          >
-            <h2
-              style={{
-                fontSize: "1rem",
-                margin: "4px 0 4px 0",
-                color: "#333",
-              }}
-            >
-              📘 規格表（各製品の通過質量百分率・参考）
-            </h2>
-            <p
-              style={{
-                fontSize: "0.8rem",
-                color: "#666",
-                marginBottom: "6px",
-              }}
-            >
-              単位：％　／　「－」はそのふるいに規定がないことを表します。
-            </p>
+            {/* 粒度入力テーブル */}
             <div
               style={{
                 overflowX: "auto",
+                marginBottom: "16px",
               }}
             >
               <table
                 style={{
+                  width: "100%",
                   borderCollapse: "collapse",
-                  minWidth: "700px",
-                  fontSize: "0.78rem",
+                  fontSize: "0.85rem",
                 }}
               >
                 <thead>
                   <tr>
                     <th
                       style={{
-                        border: "1px solid #ccc",
+                        borderBottom: "1px solid #ddd",
                         padding: "4px",
+                        textAlign: "left",
                         whiteSpace: "nowrap",
-                        background: "#f0f0f0",
                       }}
                     >
-                      製品名
+                      ふるい
                     </th>
-                    {sieves.map((sieve) => (
+                    <th
+                      style={{
+                        borderBottom: "1px solid #ddd",
+                        padding: "4px",
+                        textAlign: "center",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      通過質量百分率（％）
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sieves.map((sieve) => (
+                    <tr key={sieve.id}>
+                      <td
+                        style={{
+                          borderBottom: "1px solid #eee",
+                          padding: "4px",
+                          whiteSpace: "nowrap",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {sieve.label}
+                      </td>
+                      <td
+                        style={{
+                          borderBottom: "1px solid #eee",
+                          padding: "4px",
+                        }}
+                      >
+                        <input
+                          type="number"
+                          inputMode="decimal"
+                          value={inputs[sieve.id]}
+                          onChange={(e) =>
+                            handleChange(sieve.id, e.target.value)
+                          }
+                          placeholder={sieve.label}
+                          style={{
+                            width: "100%",
+                            maxWidth: "140px",
+                            padding: "4px 6px",
+                            fontSize: "0.9rem",
+                            boxSizing: "border-box",
+                          }}
+                          min={0}
+                          max={100}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* ボタン（印刷時は非表示） */}
+            <div
+              className="no-print"
+              style={{
+                display: "flex",
+                gap: "8px",
+                justifyContent: "center",
+                marginBottom: "16px",
+                flexWrap: "wrap",
+              }}
+            >
+              <button
+                onClick={handleJudge}
+                style={{
+                  padding: "8px 16px",
+                  borderRadius: "999px",
+                  border: "none",
+                  background: "#1976d2",
+                  color: "#fff",
+                  fontSize: "0.95rem",
+                  cursor: "pointer",
+                }}
+              >
+                判定する
+              </button>
+              <button
+                onClick={handleClear}
+                style={{
+                  padding: "8px 16px",
+                  borderRadius: "999px",
+                  border: "1px solid #ccc",
+                  background: "#fff",
+                  color: "#333",
+                  fontSize: "0.9rem",
+                  cursor: "pointer",
+                }}
+              >
+                入力をクリア（粒度のみ）
+              </button>
+            </div>
+
+            {/* 結果表示 */}
+            {results && (
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr",
+                  gap: "12px",
+                  marginBottom: "16px",
+                }}
+              >
+                {/* 合格一覧 */}
+                <div
+                  style={{
+                    borderRadius: "8px",
+                    border: "1px solid #c8e6c9",
+                    background: "#e8f5e9",
+                    padding: "8px 12px",
+                  }}
+                >
+                  <h2
+                    style={{
+                      fontSize: "1rem",
+                      margin: "0 0 4px 0",
+                      color: "#2e7d32",
+                    }}
+                  >
+                    ✅ 規格内（合格）の製品
+                  </h2>
+                  {results.passed.length === 0 ? (
+                    <p style={{ fontSize: "0.9rem", margin: 0 }}>
+                      合格した製品はありません。
+                    </p>
+                  ) : (
+                    <ul
+                      style={{
+                        margin: 0,
+                        paddingLeft: "20px",
+                        fontSize: "0.9rem",
+                      }}
+                    >
+                      {results.passed.map((name) => (
+                        <li key={name}>{name}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                {/* 不合格の詳細 */}
+                <div
+                  style={{
+                    borderRadius: "8px",
+                    border: "1px solid #ffcdd2",
+                    background: "#ffebee",
+                    padding: "8px 12px",
+                  }}
+                >
+                  <h2
+                    style={{
+                      fontSize: "1rem",
+                      margin: "0 0 4px 0",
+                      color: "#c62828",
+                    }}
+                  >
+                    ❌ 規格外（NG）の製品とNGふるい
+                  </h2>
+                  {results.failed.length === 0 ? (
+                    <p style={{ fontSize: "0.9rem", margin: 0 }}>
+                      規格外の製品はありません。
+                    </p>
+                  ) : (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "6px",
+                        fontSize: "0.9rem",
+                      }}
+                    >
+                      {results.failed.map((item) => (
+                        <div
+                          key={item.name}
+                          style={{
+                            padding: "6px 8px",
+                            borderRadius: "6px",
+                            background: "#ffffff",
+                            border: "1px solid #ffcdd2",
+                          }}
+                        >
+                          <strong>{item.name}</strong>
+                          <ul
+                            style={{
+                              margin: "4px 0 0 18px",
+                              padding: 0,
+                            }}
+                          >
+                            {item.reasons.map((r, idx) => (
+                              <li key={idx}>{r}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* 規格表（参考） */}
+            <div
+              style={{
+                marginTop: "8px",
+                paddingTop: "8px",
+                borderTop: "1px dashed #ccc",
+              }}
+            >
+              <h2
+                style={{
+                  fontSize: "1rem",
+                  margin: "4px 0 4px 0",
+                  color: "#333",
+                }}
+              >
+                📘 規格表（各製品の通過質量百分率・参考）
+              </h2>
+              <p
+                style={{
+                  fontSize: "0.8rem",
+                  color: "#666",
+                  marginBottom: "6px",
+                }}
+              >
+                単位：％　／　「－」はそのふるいに規定がないことを表します。
+              </p>
+              <div
+                style={{
+                  overflowX: "auto",
+                }}
+              >
+                <table
+                  style={{
+                    borderCollapse: "collapse",
+                    minWidth: "700px",
+                    fontSize: "0.78rem",
+                  }}
+                >
+                  <thead>
+                    <tr>
                       <th
-                        key={sieve.id}
                         style={{
                           border: "1px solid #ccc",
                           padding: "4px",
@@ -827,43 +812,57 @@ function App() {
                           background: "#f0f0f0",
                         }}
                       >
-                        {sieve.label}
+                        製品名
                       </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {products.map((product) => (
-                    <tr key={product.id}>
-                      <td
-                        style={{
-                          border: "1px solid #ddd",
-                          padding: "4px",
-                          whiteSpace: "nowrap",
-                          fontWeight: 600,
-                          background: "#fafafa",
-                        }}
-                      >
-                        {product.name}
-                      </td>
                       {sieves.map((sieve) => (
-                        <td
+                        <th
                           key={sieve.id}
+                          style={{
+                            border: "1px solid #ccc",
+                            padding: "4px",
+                            whiteSpace: "nowrap",
+                            background: "#f0f0f0",
+                          }}
+                        >
+                          {sieve.label}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {products.map((product) => (
+                      <tr key={product.id}>
+                        <td
                           style={{
                             border: "1px solid #ddd",
                             padding: "4px",
-                            textAlign: "center",
                             whiteSpace: "nowrap",
+                            fontWeight: 600,
+                            background: "#fafafa",
                           }}
                         >
-                          {formatLimit(product, sieve.id)}
+                          {product.name}
                         </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                        {sieves.map((sieve) => (
+                          <td
+                            key={sieve.id}
+                            style={{
+                              border: "1px solid #ddd",
+                              padding: "4px",
+                              textAlign: "center",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {formatLimit(product, sieve.id)}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
+            {/* 規格表ここまで */}
           </div>
         </div>
       </div>
