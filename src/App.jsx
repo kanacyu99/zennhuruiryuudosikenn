@@ -255,7 +255,7 @@ function App() {
 
   return (
     <>
-      {/* 印刷専用スタイル（横切れ防止 & 規格表を2ページ目から） */}
+      {/* 印刷時のレイアウト用（ここだけで制御） */}
       <style>
         {`
           @media print {
@@ -267,40 +267,26 @@ function App() {
               box-shadow: none !important;
               border-radius: 0 !important;
               margin: 0 !important;
-              max-width: none !important;
+              max-width: 100% !important;
               width: 100% !important;
             }
             .no-print {
               display: none !important;
             }
-
-            /* 入力テーブル：ページ幅にフィットさせる */
             .scroll-x {
               overflow: visible !important;
             }
             .scroll-x table {
               width: 100% !important;
-              min-width: 0 !important;
-              table-layout: fixed !important;
             }
-            .scroll-x input {
-              width: 100% !important;
-            }
-
-            /* 規格表は必ず2ページ目から・横切れ防止 */
-            .spec-page-break {
+            /* 規格表は2ページ目から開始（ここだけ強制改ページ） */
+            .spec-block {
               page-break-before: always;
-            }
-            .spec-table-wrapper table {
-              width: 100% !important;
-              min-width: 0 !important;
-              table-layout: fixed !important;
             }
           }
         `}
       </style>
 
-      {/* 全体を印刷用コンテナで包む */}
       <div className="print-container">
         <div
           className="page-root"
@@ -308,7 +294,6 @@ function App() {
             minHeight: "100vh",
             background: "#f5f5f5",
             padding: "16px",
-            boxSizing: "border-box",
           }}
         >
           <div
@@ -322,7 +307,7 @@ function App() {
               padding: "16px",
             }}
           >
-            {/* 上部ヘッダー＋印刷ボタン */}
+            {/* ヘッダー＋印刷ボタン */}
             <div
               style={{
                 display: "flex",
@@ -355,7 +340,6 @@ function App() {
                 </p>
               </div>
 
-              {/* 印刷ボタン（画面のみ表示） */}
               <div className="no-print" style={{ textAlign: "right" }}>
                 <button
                   onClick={() => window.print()}
@@ -375,7 +359,7 @@ function App() {
               </div>
             </div>
 
-            {/* ▼ 試験情報入力欄 ▼ */}
+            {/* 試験情報 */}
             <div
               style={{
                 marginBottom: "16px",
@@ -422,7 +406,6 @@ function App() {
                       width: "100%",
                       padding: "4px 6px",
                       fontSize: "0.9rem",
-                      boxSizing: "border-box",
                     }}
                     placeholder="例：路盤材 粒度試験"
                   />
@@ -448,7 +431,6 @@ function App() {
                       width: "100%",
                       padding: "4px 6px",
                       fontSize: "0.9rem",
-                      boxSizing: "border-box",
                     }}
                     placeholder="例：CS-40 八幡 ○○ロット"
                   />
@@ -474,7 +456,6 @@ function App() {
                       width: "100%",
                       padding: "4px 6px",
                       fontSize: "0.9rem",
-                      boxSizing: "border-box",
                     }}
                   />
                 </div>
@@ -499,7 +480,6 @@ function App() {
                       width: "100%",
                       padding: "4px 6px",
                       fontSize: "0.9rem",
-                      boxSizing: "border-box",
                     }}
                   />
                 </div>
@@ -524,7 +504,6 @@ function App() {
                       width: "100%",
                       padding: "4px 6px",
                       fontSize: "0.9rem",
-                      boxSizing: "border-box",
                     }}
                     placeholder="例：入江"
                   />
@@ -550,16 +529,14 @@ function App() {
                       width: "100%",
                       padding: "4px 6px",
                       fontSize: "0.9rem",
-                      boxSizing: "border-box",
                     }}
                     placeholder="例：備考や注意点など"
                   />
                 </div>
               </div>
             </div>
-            {/* ▲ 試験情報ここまで ▲ */}
 
-            {/* ▼ 粒度入力テーブル：Excel 風の横スクロールレイアウト ▼ */}
+            {/* 粒度入力テーブル：横スクロール */}
             <div
               className="scroll-x"
               style={{
@@ -636,7 +613,6 @@ function App() {
                             width: "80px",
                             padding: "4px 6px",
                             fontSize: "0.9rem",
-                            boxSizing: "border-box",
                           }}
                           min={0}
                           max={100}
@@ -647,9 +623,8 @@ function App() {
                 </tbody>
               </table>
             </div>
-            {/* ▲ 粒度入力テーブルここまで ▲ */}
 
-            {/* ボタン（印刷時は非表示） */}
+            {/* ボタン */}
             <div
               className="no-print"
               style={{
@@ -797,9 +772,9 @@ function App() {
               </div>
             )}
 
-            {/* 規格表（参考） — ここから2ページ目 */}
+            {/* 規格表（2ページ目スタート） */}
             <div
-              className="spec-page-break"
+              className="spec-block"
               style={{
                 marginTop: "8px",
                 paddingTop: "8px",
@@ -825,7 +800,6 @@ function App() {
                 単位：％　／　「－」はそのふるいに規定がないことを表します。
               </p>
               <div
-                className="spec-table-wrapper"
                 style={{
                   overflowX: "auto",
                 }}
