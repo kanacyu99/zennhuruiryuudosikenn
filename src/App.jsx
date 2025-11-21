@@ -230,6 +230,15 @@ function App() {
     setResults(null);
   };
 
+  // 規格値の文字列表示（min〜max か －）
+  const formatLimit = (product, sieveId) => {
+    const range = product.limits[sieveId];
+    if (!range) return "－";
+    const [min, max] = range;
+    if (min === max) return `${min}`;
+    return `${min}〜${max}`;
+  };
+
   return (
     <div
       style={{
@@ -334,7 +343,7 @@ function App() {
                       onChange={(e) =>
                         handleChange(sieve.id, e.target.value)
                       }
-                      placeholder={sieve.label} // ★ここで篩サイズを表示
+                      placeholder={sieve.label}
                       style={{
                         width: "100%",
                         maxWidth: "140px",
@@ -399,6 +408,7 @@ function App() {
               display: "grid",
               gridTemplateColumns: "1fr",
               gap: "12px",
+              marginBottom: "16px",
             }}
           >
             {/* 合格一覧 */}
@@ -497,6 +507,105 @@ function App() {
             </div>
           </div>
         )}
+
+        {/* 規格表（参考） */}
+        <div
+          style={{
+            marginTop: "8px",
+            paddingTop: "8px",
+            borderTop: "1px dashed #ccc",
+          }}
+        >
+          <h2
+            style={{
+              fontSize: "1rem",
+              margin: "4px 0 4px 0",
+              color: "#333",
+            }}
+          >
+            📘 規格表（各製品の通過質量百分率・参考）
+          </h2>
+          <p
+            style={{
+              fontSize: "0.8rem",
+              color: "#666",
+              marginBottom: "6px",
+            }}
+          >
+            単位：％　／　「－」はそのふるいに規定がないことを表します。
+          </p>
+          <div
+            style={{
+              overflowX: "auto",
+            }}
+          >
+            <table
+              style={{
+                borderCollapse: "collapse",
+                minWidth: "700px",
+                fontSize: "0.78rem",
+              }}
+            >
+              <thead>
+                <tr>
+                  <th
+                    style={{
+                      border: "1px solid #ccc",
+                      padding: "4px",
+                      whiteSpace: "nowrap",
+                      background: "#f0f0f0",
+                    }}
+                  >
+                    製品名
+                  </th>
+                  {sieves.map((sieve) => (
+                    <th
+                      key={sieve.id}
+                      style={{
+                        border: "1px solid #ccc",
+                        padding: "4px",
+                        whiteSpace: "nowrap",
+                        background: "#f0f0f0",
+                      }}
+                    >
+                      {sieve.label}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((product) => (
+                  <tr key={product.id}>
+                    <td
+                      style={{
+                        border: "1px solid #ddd",
+                        padding: "4px",
+                        whiteSpace: "nowrap",
+                        fontWeight: 600,
+                        background: "#fafafa",
+                      }}
+                    >
+                      {product.name}
+                    </td>
+                    {sieves.map((sieve) => (
+                      <td
+                        key={sieve.id}
+                        style={{
+                          border: "1px solid #ddd",
+                          padding: "4px",
+                          textAlign: "center",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {formatLimit(product, sieve.id)}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );
