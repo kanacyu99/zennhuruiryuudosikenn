@@ -1,24 +1,61 @@
-/* App.css : できるだけシンプルにしておきます */
+/* App.css ここから全部貼り付け */
 
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
-}
-
-/* 画面表示用：周りに少しだけ余白 */
 #root {
+  max-width: 960px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 1.5rem 0.5rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
 }
 
-/* 印刷時はブラウザ任せ。ここでは余計なscaleやpage-breakは付けない */
+/* 横スクロール用（画面表示用） */
+.scroll-x {
+  overflow-x: auto;
+}
+
+/* 印刷用レイアウト調整 */
 @media print {
+  /* ブラウザ余白にまかせるので、html/body は余計な余白ナシ */
+  html,
   body {
     margin: 0;
+    padding: 0;
+  }
+
+  /* 右端で切れないように、用紙幅いっぱいを使う */
+  #root {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 8mm !important; /* 左右に少しだけ余白をつける */
+  }
+
+  /* 背景や影を消してシンプルに */
+  .page-root {
+    background: #ffffff !important;
+    padding: 0 !important;
+  }
+
+  .page-card {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  /* 画面では横スクロールだが、印刷では全幅に広げる */
+  .scroll-x {
+    overflow: visible !important;
+  }
+
+  .scroll-x table {
+    width: 100% !important;
+    table-layout: fixed; /* 列幅を均等寄りにして、右端が切れにくくする */
+  }
+
+  /* 粒度入力のセルを少し細くして、横幅を節約 */
+  .sieve-input {
+    width: 60px !important;
   }
 }
+
+/* App.css ここまで */
