@@ -40,6 +40,7 @@
 .read-the-docs {
   color: #888;
 }
+
 /* 印刷時のページ分割を制御して1枚に収める */
 @media print {
   body {
@@ -61,13 +62,14 @@
   }
 
   /* 全体を1ページに縮小して白紙を出さない */
-  html, body {
+  html,
+  body {
     width: 100%;
   }
 
-  /* 縮小率（必要なら 90% や 85% に調整できます） */
+  /* ★縮小率を 80% に変更（必要なら 0.75 などに再調整） */
   body {
-    transform: scale(0.90);
+    transform: scale(0.80);
     transform-origin: top left;
   }
 }
