@@ -255,6 +255,38 @@ function App() {
 
   return (
     <>
+      {/* 印刷時の見た目だけを制御（body には触らない） */}
+      <style>
+        {`
+          @media print {
+            .page-root {
+              background: #ffffff !important;
+              padding: 0 !important;
+            }
+            .page-card {
+              box-shadow: none !important;
+              border-radius: 0 !important;
+              margin: 0 !important;
+              max-width: none !important;
+              width: 100% !important;
+            }
+            .no-print {
+              display: none !important;
+            }
+            .scroll-x {
+              overflow: visible !important;
+            }
+            .scroll-x table {
+              width: 100% !important;
+            }
+            /* 規格表は 2 ページ目から開始 */
+            .spec-section {
+              page-break-before: always;
+            }
+          }
+        `}
+      </style>
+
       {/* 全体を印刷用コンテナで包む */}
       <div className="print-container">
         <div
@@ -752,9 +784,9 @@ function App() {
               </div>
             )}
 
-            {/* ▼▼ 規格表（2ページ目に出したい） ▼▼ */}
+            {/* 規格表（参考） → ここから 2 ページ目に */}
             <div
-              className="standard-section"
+              className="spec-section"
               style={{
                 marginTop: "8px",
                 paddingTop: "8px",
@@ -780,7 +812,6 @@ function App() {
                 単位：％　／　「－」はそのふるいに規定がないことを表します。
               </p>
               <div
-                className="standard-scroll"
                 style={{
                   overflowX: "auto",
                 }}
@@ -852,7 +883,7 @@ function App() {
                 </table>
               </div>
             </div>
-            {/* ▲ 規格表ここまで ▲ */}
+            {/* 規格表ここまで */}
           </div>
         </div>
       </div>
