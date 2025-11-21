@@ -168,6 +168,7 @@ sieves.forEach((s) => {
 });
 
 function App() {
+  // 粒度試験の入力値
   const [inputs, setInputs] = useState(() => {
     const init = {};
     sieves.forEach((s) => {
@@ -176,10 +177,24 @@ function App() {
     return init;
   });
 
+  // 試料情報（Step1で追加）
+  const [sampleInfo, setSampleInfo] = useState({
+    testName: "",
+    sampleName: "",
+    collectedDate: "",
+    testDate: "",
+    tester: "",
+    note: "",
+  });
+
   const [results, setResults] = useState(null);
 
   const handleChange = (id, value) => {
     setInputs((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleSampleInfoChange = (field, value) => {
+    setSampleInfo((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleJudge = () => {
@@ -279,7 +294,191 @@ function App() {
           の各規格に対して合否判定します。※「規定なし」のふるいは自動でスキップします。
         </p>
 
-        {/* 入力フォーム */}
+        {/* ▼ 追加：試験情報入力欄 ▼ */}
+        <div
+          style={{
+            marginBottom: "16px",
+            padding: "8px 12px",
+            borderRadius: "8px",
+            background: "#fafafa",
+            border: "1px solid #e0e0e0",
+          }}
+        >
+          <h2
+            style={{
+              fontSize: "1rem",
+              margin: "0 0 8px 0",
+              color: "#333",
+            }}
+          >
+            試験情報
+          </h2>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "8px 12px",
+            }}
+          >
+            <div>
+              <label
+                style={{
+                  fontSize: "0.8rem",
+                  color: "#555",
+                  display: "block",
+                  marginBottom: "2px",
+                }}
+              >
+                試験名
+              </label>
+              <input
+                type="text"
+                value={sampleInfo.testName}
+                onChange={(e) =>
+                  handleSampleInfoChange("testName", e.target.value)
+                }
+                style={{
+                  width: "100%",
+                  padding: "4px 6px",
+                  fontSize: "0.9rem",
+                  boxSizing: "border-box",
+                }}
+                placeholder="例：路盤材 粒度試験"
+              />
+            </div>
+            <div>
+              <label
+                style={{
+                  fontSize: "0.8rem",
+                  color: "#555",
+                  display: "block",
+                  marginBottom: "2px",
+                }}
+              >
+                試料名
+              </label>
+              <input
+                type="text"
+                value={sampleInfo.sampleName}
+                onChange={(e) =>
+                  handleSampleInfoChange("sampleName", e.target.value)
+                }
+                style={{
+                  width: "100%",
+                  padding: "4px 6px",
+                  fontSize: "0.9rem",
+                  boxSizing: "border-box",
+                }}
+                placeholder="例：CS-40 八幡 ○○ロット"
+              />
+            </div>
+            <div>
+              <label
+                style={{
+                  fontSize: "0.8rem",
+                  color: "#555",
+                  display: "block",
+                  marginBottom: "2px",
+                }}
+              >
+                試料採取日
+              </label>
+              <input
+                type="date"
+                value={sampleInfo.collectedDate}
+                onChange={(e) =>
+                  handleSampleInfoChange("collectedDate", e.target.value)
+                }
+                style={{
+                  width: "100%",
+                  padding: "4px 6px",
+                  fontSize: "0.9rem",
+                  boxSizing: "border-box",
+                }}
+              />
+            </div>
+            <div>
+              <label
+                style={{
+                  fontSize: "0.8rem",
+                  color: "#555",
+                  display: "block",
+                  marginBottom: "2px",
+                }}
+              >
+                試験年月日
+              </label>
+              <input
+                type="date"
+                value={sampleInfo.testDate}
+                onChange={(e) =>
+                  handleSampleInfoChange("testDate", e.target.value)
+                }
+                style={{
+                  width: "100%",
+                  padding: "4px 6px",
+                  fontSize: "0.9rem",
+                  boxSizing: "border-box",
+                }}
+              />
+            </div>
+            <div>
+              <label
+                style={{
+                  fontSize: "0.8rem",
+                  color: "#555",
+                  display: "block",
+                  marginBottom: "2px",
+                }}
+              >
+                試験者
+              </label>
+              <input
+                type="text"
+                value={sampleInfo.tester}
+                onChange={(e) =>
+                  handleSampleInfoChange("tester", e.target.value)
+                }
+                style={{
+                  width: "100%",
+                  padding: "4px 6px",
+                  fontSize: "0.9rem",
+                  boxSizing: "border-box",
+                }}
+                placeholder="例：入江"
+              />
+            </div>
+            <div>
+              <label
+                style={{
+                  fontSize: "0.8rem",
+                  color: "#555",
+                  display: "block",
+                  marginBottom: "2px",
+                }}
+              >
+                備考
+              </label>
+              <input
+                type="text"
+                value={sampleInfo.note}
+                onChange={(e) =>
+                  handleSampleInfoChange("note", e.target.value)
+                }
+                style={{
+                  width: "100%",
+                  padding: "4px 6px",
+                  fontSize: "0.9rem",
+                  boxSizing: "border-box",
+                }}
+                placeholder="例：備考や注意点など"
+              />
+            </div>
+          </div>
+        </div>
+        {/* ▲ 追加ここまで ▲ */}
+
+        {/* 入力フォーム（ふるい別 通過百分率） */}
         <div
           style={{
             overflowX: "auto",
@@ -397,7 +596,7 @@ function App() {
               cursor: "pointer",
             }}
           >
-            入力をクリア
+            入力をクリア（粒度のみ）
           </button>
         </div>
 
