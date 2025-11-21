@@ -1,35 +1,128 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+const sieves = [
+  { id: "53", label: "53 mm" },
+  { id: "37.5", label: "37.5 mm" },
+  { id: "31.5", label: "31.5 mm" },
+  { id: "26.5", label: "26.5 mm" },
+  { id: "19", label: "19.0 mm" },
+  { id: "13.2", label: "13.2 mm" },
+  { id: "4.75", label: "4.75 mm" },
+  { id: "2.36", label: "2.36 mm" },
+  { id: "0.425", label: "0.425 mm (425 µm)" },
+  { id: "0.075", label: "0.075 mm (75 µm)" },
+];
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
-
-export default App
+// 各製品の粒度規格（min, max）。規定なしのふるいはキー自体を持たせない
+const products = [
+  {
+    id: "HMS-25",
+    name: "HMS-25（25〜0）",
+    limits: {
+      "31.5": [100, 100],
+      "26.5": [95, 100],
+      "13.2": [60, 80],
+      "4.75": [35, 60],
+      "2.36": [25, 45],
+      "0.425": [10, 25],
+      "0.075": [3, 10],
+    },
+  },
+  {
+    id: "MS-25",
+    name: "MS-25（25〜0）",
+    limits: {
+      "31.5": [100, 100],
+      "26.5": [95, 100],
+      "13.2": [55, 85],
+      "4.75": [30, 65],
+      "2.36": [20, 50],
+      "0.425": [10, 30],
+      "0.075": [2, 10],
+    },
+  },
+  {
+    id: "CS-40",
+    name: "CS-40（40〜0）",
+    limits: {
+      "53": [100, 100],
+      "37.5": [95, 100],
+      "19": [50, 80],
+      "4.75": [15, 40],
+      "2.36": [5, 25],
+    },
+  },
+  {
+    id: "CS-30",
+    name: "CS-30（30〜0）",
+    limits: {
+      "37.5": [100, 100],
+      "31.5": [95, 100],
+      "19": [55, 85],
+      "4.75": [15, 45],
+      "2.36": [5, 30],
+    },
+  },
+  {
+    id: "CS-20",
+    name: "CS-20（20〜0）",
+    limits: {
+      "26.5": [100, 100],
+      "19": [95, 100],
+      "13.2": [60, 90],
+      "4.75": [20, 50],
+      "2.36": [10, 35],
+    },
+  },
+  {
+    id: "RC-40",
+    name: "RC-40（40〜0）",
+    limits: {
+      "53": [100, 100],
+      "37.5": [95, 100],
+      "19": [50, 80],
+      "4.75": [15, 40],
+      "2.36": [5, 25],
+    },
+  },
+  {
+    id: "RC-30",
+    name: "RC-30（30〜0）",
+    limits: {
+      "37.5": [100, 100],
+      "31.5": [95, 100],
+      "19": [55, 85],
+      "4.75": [15, 45],
+      "2.36": [5, 30],
+    },
+  },
+  {
+    id: "RC-20",
+    name: "RC-20（20〜0）",
+    limits: {
+      "26.5": [100, 100],
+      "19": [95, 100],
+      "13.2": [60, 90],
+      "4.75": [20, 50],
+      "2.36": [10, 35],
+    },
+  },
+  {
+    id: "RM-40",
+    name: "RM-40（40〜0）",
+    limits: {
+      "53": [100, 100],
+      "37.5": [95, 100],
+      "19": [60, 90],
+      "4.75": [30, 65],
+      "2.36": [20, 50],
+      "0.425": [10, 30],
+      "0.075": [2, 10],
+    },
+  },
+  {
+    id: "RM-30",
+    name: "RM-30（30〜0）",
+    limits: {
+      "37.5": [100, 100],
+      "31.5": [95, 100]()
