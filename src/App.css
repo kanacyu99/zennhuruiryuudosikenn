@@ -5,113 +5,60 @@
   text-align: center;
 }
 
-/* 以下は Vite のおまけ（使ってなくてもそのままでOK） */
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
 /* ============================= */
-/*      印刷レイアウト調整       */
+/*         印刷レイアウト         */
 /* ============================= */
+
+@page {
+  size: A4 portrait;
+  margin: 5mm;
+}
+
 @media print {
-  html,
-  body {
+  html, body {
     margin: 0;
     padding: 0;
     width: 100%;
   }
 
-  /* 余白を減らして高さ節約 */
   #root {
     max-width: none;
-    padding: 4mm;
+    padding: 0;
   }
 
-  /* ページ全体の背景・余白を削る */
-  .page-root {
-    background: #ffffff !important;
-    padding: 0 !important;
-  }
-
-  .page-card {
-    margin: 0 !important;
-    padding: 6px !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-  }
-
-  /* 印刷不要なボタンなどは非表示 */
   .no-print {
     display: none !important;
   }
 
-  /* 表は途中で改ページさせない */
-  .print-container {
-    page-break-inside: avoid;
+  /* ▼▼ 右端切れ防止（今回の本命） ▼▼ */
+
+  /* 横スクロールを無効化し、表を印刷枠に完全フィット */
+  .scroll-x {
+    overflow: visible !important;
+    width: 100% !important;
   }
 
-  table {
-    page-break-inside: avoid;
+  /* 表の最小幅を強制解除（右端が切れる原因の90%はこれ） */
+  .scroll-x table {
+    min-width: auto !important;
+    width: 100% !important;
+    table-layout: fixed !important; /* 列幅を圧縮して強制的に収める */
   }
 
-  .no-break {
-    page-break-before: avoid;
-    page-break-after: avoid;
+  .scroll-x th,
+  .scroll-x td {
+    white-space: nowrap;
+    padding: 2px 4px !important;
+    font-size: 0.6rem !important;
   }
 
-  /* フォントサイズを少し小さくして高さ節約 */
-  h1 {
-    font-size: 1.1rem !important;
+  /* 表全体を横方向だけ 80% に縮める */
+  .scroll-x table {
+    transform: scale(0.80);
+    transform-origin: top left;
   }
 
-  h2 {
-    font-size: 0.95rem !important;
-  }
-
-  p,
-  label,
-  input,
-  button,
-  table,
-  th,
-  td,
-  li {
-    font-size: 0.70rem !important;
-  }
-
-  /* 全体を 75% に縮小して 1 ページに収める */
+  /* ▼▼ 全体縮小（下が1ページに収まらない場合用） ▼▼ */
   body {
     transform: scale(0.75);
     transform-origin: top left;
