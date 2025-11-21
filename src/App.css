@@ -1,133 +1,24 @@
+/* App.css : できるだけシンプルにしておきます */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
+
+/* 画面表示用：周りに少しだけ余白 */
 #root {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 16px;
 }
 
-/* Vite のデフォルト（あっても実害なし） */
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-/* ================================= */
-/*          印刷レイアウト           */
-/* ================================= */
-
-@page {
-  size: A4 portrait;
-  margin: 8mm;
-}
-
+/* 印刷時はブラウザ任せ。ここでは余計なscaleやpage-breakは付けない */
 @media print {
-  html,
   body {
     margin: 0;
-    padding: 0;
-    width: 100%;
-  }
-
-  #root {
-    max-width: none;
-    padding: 0;
-  }
-
-  /* 画面用の背景を消す */
-  .page-root {
-    background: #ffffff !important;
-    padding: 0 !important;
-  }
-
-  .page-card {
-    margin: 0 !important;
-    padding: 8px !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-  }
-
-  /* 印刷不要なボタンは消す */
-  .no-print {
-    display: none !important;
-  }
-
-  /* 1ページ目：試験情報〜結果をまとめるため、表を途中で切らない */
-  table {
-    page-break-inside: avoid;
-  }
-
-  /* 規格表は必ず 2 ページ目の先頭から始める */
-  .standard-section {
-    page-break-before: always;
-  }
-
-  /* 横スクロール領域：印刷時は幅 100% にして右端切れを防止 */
-  .scroll-x,
-  .standard-scroll {
-    overflow: visible !important;
-    width: 100% !important;
-  }
-
-  .scroll-x table,
-  .standard-scroll table {
-    min-width: auto !important;
-    width: 100% !important;
-    table-layout: fixed !important;
-  }
-
-  .scroll-x th,
-  .scroll-x td,
-  .standard-scroll th,
-  .standard-scroll td {
-    padding: 2px 4px !important;
-    font-size: 0.7rem !important;
-    white-space: nowrap;
-  }
-
-  /* 見出しなどはやや小さめに */
-  h1 {
-    font-size: 1.1rem !important;
-  }
-
-  h2 {
-    font-size: 0.9rem !important;
-  }
-
-  p,
-  label,
-  input,
-  li {
-    font-size: 0.75rem !important;
   }
 }
