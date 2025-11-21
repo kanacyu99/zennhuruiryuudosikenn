@@ -275,7 +275,7 @@ function App() {
         `}
       </style>
 
-      {/* 👇 ここで全体を印刷用コンテナで包む */}
+      {/* 全体を印刷用コンテナで包む */}
       <div className="print-container">
         <div
           className="page-root"
@@ -534,7 +534,7 @@ function App() {
             </div>
             {/* ▲ 試験情報ここまで ▲ */}
 
-            {/* 粒度入力テーブル */}
+            {/* ▼ 粒度入力テーブル：Excel 風の横スクロールレイアウト ▼ */}
             <div
               style={{
                 overflowX: "auto",
@@ -543,52 +543,60 @@ function App() {
             >
               <table
                 style={{
-                  width: "100%",
                   borderCollapse: "collapse",
                   fontSize: "0.85rem",
+                  minWidth: "700px",
                 }}
               >
                 <thead>
                   <tr>
                     <th
                       style={{
-                        borderBottom: "1px solid #ddd",
-                        padding: "4px",
-                        textAlign: "left",
+                        border: "1px solid #ddd",
+                        padding: "4px 6px",
                         whiteSpace: "nowrap",
+                        background: "#f0f0f0",
+                        textAlign: "center",
                       }}
                     >
                       ふるい
                     </th>
+                    {sieves.map((sieve) => (
+                      <th
+                        key={sieve.id}
+                        style={{
+                          border: "1px solid #ddd",
+                          padding: "4px 6px",
+                          whiteSpace: "nowrap",
+                          background: "#f0f0f0",
+                          textAlign: "center",
+                        }}
+                      >
+                        {sieve.label}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
                     <th
                       style={{
-                        borderBottom: "1px solid #ddd",
-                        padding: "4px",
-                        textAlign: "center",
+                        border: "1px solid #ddd",
+                        padding: "4px 6px",
                         whiteSpace: "nowrap",
+                        background: "#fafafa",
+                        textAlign: "center",
                       }}
                     >
                       通過質量百分率（％）
                     </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sieves.map((sieve) => (
-                    <tr key={sieve.id}>
+                    {sieves.map((sieve) => (
                       <td
+                        key={sieve.id}
                         style={{
-                          borderBottom: "1px solid #eee",
-                          padding: "4px",
-                          whiteSpace: "nowrap",
-                          fontWeight: 600,
-                        }}
-                      >
-                        {sieve.label}
-                      </td>
-                      <td
-                        style={{
-                          borderBottom: "1px solid #eee",
-                          padding: "4px",
+                          border: "1px solid #ddd",
+                          padding: "4px 6px",
+                          textAlign: "center",
                         }}
                       >
                         <input
@@ -598,10 +606,9 @@ function App() {
                           onChange={(e) =>
                             handleChange(sieve.id, e.target.value)
                           }
-                          placeholder={sieve.label}
+                          placeholder=""
                           style={{
-                            width: "100%",
-                            maxWidth: "140px",
+                            width: "80px",
                             padding: "4px 6px",
                             fontSize: "0.9rem",
                             boxSizing: "border-box",
@@ -610,11 +617,12 @@ function App() {
                           max={100}
                         />
                       </td>
-                    </tr>
-                  ))}
+                    ))}
+                  </tr>
                 </tbody>
               </table>
             </div>
+            {/* ▲ 粒度入力テーブルここまで ▲ */}
 
             {/* ボタン（印刷時は非表示） */}
             <div
