@@ -5,6 +5,7 @@
   text-align: center;
 }
 
+/* 以下は Vite のおまけ（使ってなくてもそのままでOK） */
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -41,13 +42,42 @@
   color: #888;
 }
 
-/* 印刷時のページ分割を制御して1枚に収める */
+/* ============================= */
+/*      印刷レイアウト調整       */
+/* ============================= */
 @media print {
+  html,
   body {
     margin: 0;
     padding: 0;
+    width: 100%;
   }
 
+  /* 余白を減らして高さ節約 */
+  #root {
+    max-width: none;
+    padding: 4mm;
+  }
+
+  /* ページ全体の背景・余白を削る */
+  .page-root {
+    background: #ffffff !important;
+    padding: 0 !important;
+  }
+
+  .page-card {
+    margin: 0 !important;
+    padding: 6px !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  /* 印刷不要なボタンなどは非表示 */
+  .no-print {
+    display: none !important;
+  }
+
+  /* 表は途中で改ページさせない */
   .print-container {
     page-break-inside: avoid;
   }
@@ -61,15 +91,29 @@
     page-break-after: avoid;
   }
 
-  /* 全体を1ページに縮小して白紙を出さない */
-  html,
-  body {
-    width: 100%;
+  /* フォントサイズを少し小さくして高さ節約 */
+  h1 {
+    font-size: 1.1rem !important;
   }
 
-  /* ★縮小率を 80% に変更（必要なら 0.75 などに再調整） */
+  h2 {
+    font-size: 0.95rem !important;
+  }
+
+  p,
+  label,
+  input,
+  button,
+  table,
+  th,
+  td,
+  li {
+    font-size: 0.70rem !important;
+  }
+
+  /* 全体を 75% に縮小して 1 ページに収める */
   body {
-    transform: scale(0.80);
+    transform: scale(0.75);
     transform-origin: top left;
   }
 }
