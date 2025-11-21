@@ -267,9 +267,17 @@ function App() {
               box-shadow: none !important;
               border-radius: 0 !important;
               margin: 0 !important;
+              max-width: none !important;
+              width: 100% !important;
             }
             .no-print {
               display: none !important;
+            }
+            .scroll-x {
+              overflow: visible !important;
+            }
+            .scroll-x table {
+              width: 100% !important;
             }
           }
         `}
@@ -536,6 +544,7 @@ function App() {
 
             {/* ▼ 粒度入力テーブル：Excel 風の横スクロールレイアウト ▼ */}
             <div
+              className="scroll-x"
               style={{
                 overflowX: "auto",
                 marginBottom: "16px",
@@ -545,7 +554,7 @@ function App() {
                 style={{
                   borderCollapse: "collapse",
                   fontSize: "0.85rem",
-                  minWidth: "700px",
+                  minWidth: "900px",
                 }}
               >
                 <thead>
@@ -606,7 +615,6 @@ function App() {
                           onChange={(e) =>
                             handleChange(sieve.id, e.target.value)
                           }
-                          placeholder=""
                           style={{
                             width: "80px",
                             padding: "4px 6px",
