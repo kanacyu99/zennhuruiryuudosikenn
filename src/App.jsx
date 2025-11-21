@@ -271,7 +271,7 @@ function App() {
               width: 100% !important;
             }
             .no-print {
-              display: none !important;
+              display: none !重要;
             }
             .scroll-x {
               overflow: visible !important;
@@ -554,7 +554,7 @@ function App() {
                 style={{
                   borderCollapse: "collapse",
                   fontSize: "0.85rem",
-                  minWidth: "900px",
+                  minWidth: "820px", // ★ 900 → 820 に縮小
                 }}
               >
                 <thead>
@@ -616,7 +616,7 @@ function App() {
                             handleChange(sieve.id, e.target.value)
                           }
                           style={{
-                            width: "80px",
+                            width: "65px", // ★ 80 → 65 に縮小
                             padding: "4px 6px",
                             fontSize: "0.9rem",
                             boxSizing: "border-box",
