@@ -169,7 +169,6 @@ sieves.forEach((s) => {
 });
 
 function App() {
-  // 粒度試験の入力値
   const [inputs, setInputs] = useState(() => {
     const init = {};
     sieves.forEach((s) => {
@@ -178,7 +177,6 @@ function App() {
     return init;
   });
 
-  // 試料情報
   const [sampleInfo, setSampleInfo] = useState({
     testName: "",
     sampleName: "",
@@ -245,7 +243,6 @@ function App() {
     setResults(null);
   };
 
-  // 規格値の文字列表示（min〜max か －）
   const formatLimit = (product, sieveId) => {
     const range = product.limits[sieveId];
     if (!range) return "－";
@@ -256,7 +253,6 @@ function App() {
 
   return (
     <>
-      {/* 印刷時のレイアウト（シンプル版） */}
       <style>
         {`
           @media print {
@@ -283,6 +279,13 @@ function App() {
             .no-print {
               display: none !important;
             }
+
+            /* ★判定結果を2ページ目先頭に */
+            .result-block {
+              page-break-before: always;
+            }
+
+            /* ★規格表を3ページ目先頭に */
             .spec-block {
               page-break-before: always;
             }
@@ -290,7 +293,10 @@ function App() {
         `}
       </style>
 
-      <div className="page-root" style={{ minHeight: "100vh", background: "#f5f5f5", padding: "16px" }}>
+      <div
+        className="page-root"
+        style={{ minHeight: "100vh", background: "#f5f5f5", padding: "16px" }}
+      >
         <div
           className="page-card"
           style={{
@@ -355,7 +361,7 @@ function App() {
             </div>
           </div>
 
-          {/* 試験情報 */}
+          {/* 試験情報（1ページ目） */}
           <div
             style={{
               marginBottom: "16px",
@@ -532,7 +538,7 @@ function App() {
             </div>
           </div>
 
-          {/* 粒度入力：縦レイアウト */}
+          {/* 粒度入力（1ページ目） */}
           <div
             style={{
               marginBottom: "16px",
@@ -669,114 +675,116 @@ function App() {
             </button>
           </div>
 
-          {/* 結果表示 */}
+          {/* ★ 判定結果（2ページ目スタート） */}
           {results && (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr",
-                gap: "12px",
-                marginBottom: "16px",
-              }}
-            >
-              {/* 合格一覧 */}
+            <div className="result-block">
               <div
                 style={{
-                  borderRadius: "8px",
-                  border: "1px solid #c8e6c9",
-                  background: "#e8f5e9",
-                  padding: "8px 12px",
+                  display: "grid",
+                  gridTemplateColumns: "1fr",
+                  gap: "12px",
+                  marginBottom: "16px",
                 }}
               >
-                <h2
+                {/* 合格一覧 */}
+                <div
                   style={{
-                    fontSize: "1rem",
-                    margin: "0 0 4px 0",
-                    color: "#2e7d32",
+                    borderRadius: "8px",
+                    border: "1px solid #c8e6c9",
+                    background: "#e8f5e9",
+                    padding: "8px 12px",
                   }}
                 >
-                  ✅ 規格内（合格）の製品
-                </h2>
-                {results.passed.length === 0 ? (
-                  <p style={{ fontSize: "0.9rem", margin: 0 }}>
-                    合格した製品はありません。
-                  </p>
-                ) : (
-                  <ul
+                  <h2
                     style={{
-                      margin: 0,
-                      paddingLeft: "20px",
-                      fontSize: "0.9rem",
+                      fontSize: "1rem",
+                      margin: "0 0 4px 0",
+                      color: "#2e7d32",
                     }}
                   >
-                    {results.passed.map((name) => (
-                      <li key={name}>{name}</li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+                    ✅ 規格内（合格）の製品
+                  </h2>
+                  {results.passed.length === 0 ? (
+                    <p style={{ fontSize: "0.9rem", margin: 0 }}>
+                      合格した製品はありません。
+                    </p>
+                  ) : (
+                    <ul
+                      style={{
+                        margin: 0,
+                        paddingLeft: "20px",
+                        fontSize: "0.9rem",
+                      }}
+                    >
+                      {results.passed.map((name) => (
+                        <li key={name}>{name}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
 
-              {/* 不合格一覧 */}
-              <div
-                style={{
-                  borderRadius: "8px",
-                  border: "1px solid #ffcdd2",
-                  background: "#ffebee",
-                  padding: "8px 12px",
-                }}
-              >
-                <h2
+                {/* 不合格一覧 */}
+                <div
                   style={{
-                    fontSize: "1rem",
-                    margin: "0 0 4px 0",
-                    color: "#c62828",
+                    borderRadius: "8px",
+                    border: "1px solid #ffcdd2",
+                    background: "#ffebee",
+                    padding: "8px 12px",
                   }}
                 >
-                  ❌ 規格外（NG）の製品とNGふるい
-                </h2>
-                {results.failed.length === 0 ? (
-                  <p style={{ fontSize: "0.9rem", margin: 0 }}>
-                    規格外の製品はありません。
-                  </p>
-                ) : (
-                  <div
+                  <h2
                     style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "6px",
-                      fontSize: "0.9rem",
+                      fontSize: "1rem",
+                      margin: "0 0 4px 0",
+                      color: "#c62828",
                     }}
                   >
-                    {results.failed.map((item) => (
-                      <div
-                        key={item.name}
-                        style={{
-                          padding: "6px 8px",
-                          borderRadius: "6px",
-                          background: "#ffffff",
-                          border: "1px solid #ffcdd2",
-                        }}
-                      >
-                        <strong>{item.name}</strong>
-                        <ul
+                    ❌ 規格外（NG）の製品とNGふるい
+                  </h2>
+                  {results.failed.length === 0 ? (
+                    <p style={{ fontSize: "0.9rem", margin: 0 }}>
+                      規格外の製品はありません。
+                    </p>
+                  ) : (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "6px",
+                        fontSize: "0.9rem",
+                      }}
+                    >
+                      {results.failed.map((item) => (
+                        <div
+                          key={item.name}
                           style={{
-                            margin: "4px 0 0 18px",
-                            padding: 0,
+                            padding: "6px 8px",
+                            borderRadius: "6px",
+                            background: "#ffffff",
+                            border: "1px solid #ffcdd2",
                           }}
                         >
-                          {item.reasons.map((r, idx) => (
-                            <li key={idx}>{r}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                            <strong>{item.name}</strong>
+                            <ul
+                              style={{
+                                margin: "4px 0 0 18px",
+                                padding: 0,
+                              }}
+                            >
+                              {item.reasons.map((r, idx) => (
+                                <li key={idx}>{r}</li>
+                              ))}
+                            </ul>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           )}
 
-          {/* 規格表（2ページ目スタート） */}
+          {/* 規格表（3ページ目スタート） */}
           <div
             className="spec-block"
             style={{
