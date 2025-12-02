@@ -259,52 +259,26 @@ function App() {
       <style>
         {`
           @media print {
-            /* 余白を最小にして用紙幅いっぱい使う */
-            html, body {
-              margin: 0;
-              padding: 0;
-            }
-
-            #root {
-              max-width: none !important;
-              margin: 0 !important;
-              padding: 0 !important;
-            }
-
             .page-root {
               background: #ffffff !important;
               padding: 0 !important;
             }
-
-            /* A4より少し小さい幅に固定して、右端が切れないようにする */
             .page-card {
               box-shadow: none !important;
               border-radius: 0 !important;
-              margin: 0 auto !important;
-              width: 190mm !important;
-              max-width: 190mm !important;
+              margin: 0 !important;
+              max-width: 100% !important;
+              width: 100% !important;
             }
-
             .no-print {
               display: none !important;
             }
-
             .scroll-x {
               overflow: visible !important;
             }
-
             .scroll-x table {
               width: 100% !important;
-              table-layout: fixed; /* 列幅を均等寄りにして収めやすくする */
             }
-
-            /* 粒度入力欄を印刷時だけ少し細くする */
-            .sieve-input {
-              width: 55px !important;
-              padding: 2px 3px !important;
-              font-size: 0.75rem !important;
-            }
-
             /* 規格表は2ページ目から開始（ここだけ強制改ページ） */
             .spec-block {
               page-break-before: always;
@@ -329,7 +303,7 @@ function App() {
               margin: "0 auto",
               background: "#ffffff",
               borderRadius: "12px",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
               padding: "16px",
             }}
           >
@@ -356,7 +330,7 @@ function App() {
                 <p
                   style={{
                     fontSize: "0.9rem",
-                    color: "#555",
+                    color: "#555555",
                     textAlign: "center",
                     margin: 0,
                   }}
@@ -373,7 +347,7 @@ function App() {
                     padding: "6px 12px",
                     borderRadius: "999px",
                     border: "1px solid #1976d2",
-                    background: "#fff",
+                    background: "#ffffff",
                     color: "#1976d2",
                     fontSize: "0.85rem",
                     cursor: "pointer",
@@ -392,14 +366,14 @@ function App() {
                 padding: "8px 12px",
                 borderRadius: "8px",
                 background: "#fafafa",
-                border: "1px solid "#e0e0e0",
+                border: "1px solid #e0e0e0",
               }}
             >
               <h2
                 style={{
                   fontSize: "1rem",
                   margin: "0 0 8px 0",
-                  color: "#333",
+                  color: "#333333",
                 }}
               >
                 試験情報
@@ -415,7 +389,7 @@ function App() {
                   <label
                     style={{
                       fontSize: "0.8rem",
-                      color: "#555",
+                      color: "#555555",
                       display: "block",
                       marginBottom: "2px",
                     }}
@@ -440,7 +414,7 @@ function App() {
                   <label
                     style={{
                       fontSize: "0.8rem",
-                      color: "#555",
+                      color: "#555555",
                       display: "block",
                       marginBottom: "2px",
                     }}
@@ -465,7 +439,7 @@ function App() {
                   <label
                     style={{
                       fontSize: "0.8rem",
-                      color: "#555",
+                      color: "#555555",
                       display: "block",
                       marginBottom: "2px",
                     }}
@@ -489,7 +463,7 @@ function App() {
                   <label
                     style={{
                       fontSize: "0.8rem",
-                      color: "#555",
+                      color: "#555555",
                       display: "block",
                       marginBottom: "2px",
                     }}
@@ -513,7 +487,7 @@ function App() {
                   <label
                     style={{
                       fontSize: "0.8rem",
-                      color: "#555",
+                      color: "#555555",
                       display: "block",
                       marginBottom: "2px",
                     }}
@@ -538,7 +512,7 @@ function App() {
                   <label
                     style={{
                       fontSize: "0.8rem",
-                      color: "#555",
+                      color: "#555555",
                       display: "block",
                       marginBottom: "2px",
                     }}
@@ -581,7 +555,7 @@ function App() {
                   <tr>
                     <th
                       style={{
-                        border: "1px solid #ddd",
+                        border: "1px solid #dddddd",
                         padding: "4px 6px",
                         whiteSpace: "nowrap",
                         background: "#f0f0f0",
@@ -594,7 +568,7 @@ function App() {
                       <th
                         key={sieve.id}
                         style={{
-                          border: "1px solid #ddd",
+                          border: "1px solid #dddddd",
                           padding: "4px 6px",
                           whiteSpace: "nowrap",
                           background: "#f0f0f0",
@@ -610,7 +584,7 @@ function App() {
                   <tr>
                     <th
                       style={{
-                        border: "1px solid #ddd",
+                        border: "1px solid #dddddd",
                         padding: "4px 6px",
                         whiteSpace: "nowrap",
                         background: "#fafafa",
@@ -623,13 +597,12 @@ function App() {
                       <td
                         key={sieve.id}
                         style={{
-                          border: "1px solid #ddd",
+                          border: "1px solid #dddddd",
                           padding: "4px 6px",
                           textAlign: "center",
                         }}
                       >
                         <input
-                          className="sieve-input"
                           type="number"
                           inputMode="decimal"
                           value={inputs[sieve.id]}
@@ -669,7 +642,7 @@ function App() {
                   borderRadius: "999px",
                   border: "none",
                   background: "#1976d2",
-                  color: "#fff",
+                  color: "#ffffff",
                   fontSize: "0.95rem",
                   cursor: "pointer",
                 }}
@@ -681,9 +654,9 @@ function App() {
                 style={{
                   padding: "8px 16px",
                   borderRadius: "999px",
-                  border: "1px solid #ccc",
-                  background: "#fff",
-                  color: "#333",
+                  border: "1px solid #cccccc",
+                  background: "#ffffff",
+                  color: "#333333",
                   fontSize: "0.9rem",
                   cursor: "pointer",
                 }}
@@ -805,14 +778,14 @@ function App() {
               style={{
                 marginTop: "8px",
                 paddingTop: "8px",
-                borderTop: "1px dashed #ccc",
+                borderTop: "1px dashed #cccccc",
               }}
             >
               <h2
                 style={{
                   fontSize: "1rem",
                   margin: "4px 0 4px 0",
-                  color: "#333",
+                  color: "#333333",
                 }}
               >
                 📘 規格表（各製品の通過質量百分率・参考）
@@ -820,7 +793,7 @@ function App() {
               <p
                 style={{
                   fontSize: "0.8rem",
-                  color: "#666",
+                  color: "#666666",
                   marginBottom: "6px",
                 }}
               >
@@ -842,7 +815,7 @@ function App() {
                     <tr>
                       <th
                         style={{
-                          border: "1px solid #ccc",
+                          border: "1px solid #cccccc",
                           padding: "4px",
                           whiteSpace: "nowrap",
                           background: "#f0f0f0",
@@ -854,7 +827,7 @@ function App() {
                         <th
                           key={sieve.id}
                           style={{
-                            border: "1px solid #ccc",
+                            border: "1px solid #cccccc",
                             padding: "4px",
                             whiteSpace: "nowrap",
                             background: "#f0f0f0",
@@ -870,7 +843,7 @@ function App() {
                       <tr key={product.id}>
                         <td
                           style={{
-                            border: "1px solid #ddd",
+                            border: "1px solid #dddddd",
                             padding: "4px",
                             whiteSpace: "nowrap",
                             fontWeight: 600,
@@ -883,7 +856,7 @@ function App() {
                           <td
                             key={sieve.id}
                             style={{
-                              border: "1px solid #ddd",
+                              border: "1px solid #dddddd",
                               padding: "4px",
                               textAlign: "center",
                               whiteSpace: "nowrap",
