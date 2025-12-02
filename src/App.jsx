@@ -259,26 +259,52 @@ function App() {
       <style>
         {`
           @media print {
+            /* 余白を最小にして用紙幅いっぱい使う */
+            html, body {
+              margin: 0;
+              padding: 0;
+            }
+
+            #root {
+              max-width: none !important;
+              margin: 0 !important;
+              padding: 0 !important;
+            }
+
             .page-root {
               background: #ffffff !important;
               padding: 0 !important;
             }
+
+            /* A4より少し小さい幅に固定して、右端が切れないようにする */
             .page-card {
               box-shadow: none !important;
               border-radius: 0 !important;
-              margin: 0 !important;
-              max-width: 100% !important;
-              width: 100% !important;
+              margin: 0 auto !important;
+              width: 190mm !important;
+              max-width: 190mm !important;
             }
+
             .no-print {
               display: none !important;
             }
+
             .scroll-x {
               overflow: visible !important;
             }
+
             .scroll-x table {
               width: 100% !important;
+              table-layout: fixed; /* 列幅を均等寄りにして収めやすくする */
             }
+
+            /* 粒度入力欄を印刷時だけ少し細くする */
+            .sieve-input {
+              width: 55px !important;
+              padding: 2px 3px !important;
+              font-size: 0.75rem !important;
+            }
+
             /* 規格表は2ページ目から開始（ここだけ強制改ページ） */
             .spec-block {
               page-break-before: always;
@@ -366,7 +392,7 @@ function App() {
                 padding: "8px 12px",
                 borderRadius: "8px",
                 background: "#fafafa",
-                border: "1px solid #e0e0e0",
+                border: "1px solid "#e0e0e0",
               }}
             >
               <h2
@@ -603,6 +629,7 @@ function App() {
                         }}
                       >
                         <input
+                          className="sieve-input"
                           type="number"
                           inputMode="decimal"
                           value={inputs[sieve.id]}
